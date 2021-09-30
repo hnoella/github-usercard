@@ -33,13 +33,6 @@ axios.get("https://api.github.com/users/hnoella").then((res) => {
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
-
-followersArray.forEach((username) => {
-  axios.get(`https://api.github.com/users/${username}`).then((res) => {
-    entryPoint.appendChild(cardMaker(res.data));
-  });
-});
-
 const followersArray = [
   "tetondan",
   "dustinmyers",
@@ -47,6 +40,11 @@ const followersArray = [
   "luishrd",
   "bigknell",
 ];
+followersArray.forEach((obj) => {
+  axios.get(`https://api.github.com/users/${obj}`).then((res) => {
+    entryPoint.appendChild(cardMaker(res.data));
+  });
+});
 
 // followersArray.forEach((username) => {
 //   getInfo(username);
@@ -71,7 +69,7 @@ const followersArray = [
     </div>
 */
 
-function cardMaker(
+function cardMaker({
   name,
   login,
   location,
@@ -81,8 +79,8 @@ function cardMaker(
   following,
   bio,
   avatar_url,
-  html_url
-) {
+  html_url,
+}) {
   const card1 = document.createElement("div");
   const image = document.createElement("img");
   const information = document.createElement("div");
@@ -111,17 +109,16 @@ function cardMaker(
   information.appendChild(following1);
   information.appendChild(bio1);
 
-  image.setAttribute("src", avatar_url);
-  image.setAttribute("alt", name);
-  link.setAttribute("href", url);
+  image.src = avatar_url;
+  link.href = html_url;
   userName.textContent = name;
   username1.textContent = login;
-  location1.textContent = location;
+  location1.textContent = `Location:${location}`;
   link.textContent = html_url;
-  profile1.textContent = github;
-  followers1.textContent = followers;
-  following1.textContent = following;
-  bio1.textContent = bio;
+  profile1.textContent = `profile:`;
+  followers1.textContent = `Followers: ${followers}`;
+  following1.textContent = `Following: ${following}`;
+  bio1.textContent = `Bio: ${bio}`;
 
   return card1;
 }
